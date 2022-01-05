@@ -4,10 +4,14 @@ import NavBar from './NavBar';
 import AccountPage from './AccountPage';
 import Header from './Header';
 import Search from './Search';
+
+import HomePage from './HomePage';
+
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import LoggedInApp from "./components/LoggedInApp";
 import LoggedOutApp from "./components/LoggedOutApp";
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -38,6 +42,9 @@ function App() {
       {/* <Router> */}
       <NavBar />
       <Switch>
+      <Route path="/home">
+          <HomePage />
+        </Route>
         <Route path="/account">
           <AccountPage />
         </Route>
@@ -46,7 +53,6 @@ function App() {
         </Route>
       </Switch>
       {/* </Router> */}
-      
       
     </div>
   );

@@ -1,14 +1,18 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import styled from 'styled-components';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faHome } from '@fortawesome/free-solid-svg-icons'
 
 function NavBar() {
     return (
         <HeaderStyle>
             <div className="navigation">
-                <NavLink to="/home" exact><li>Feed</li></NavLink>
-                <NavLink to="/account"><li>Account</li></NavLink>
-                <NavLink to="/search"><li>Search</li></NavLink>
+                <NavLink to="/home" exact><li><FontAwesomeIcon icon={faHome}></FontAwesomeIcon> Feed</li></NavLink>
+                <NavLink to="/account"><li><FontAwesomeIcon icon={faUser}></FontAwesomeIcon> Account</li></NavLink>
+                <NavLink to="/search"><li><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon> Search</li></NavLink>
             </div>
         </HeaderStyle>
     )
