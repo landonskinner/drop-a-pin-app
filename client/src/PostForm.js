@@ -10,7 +10,7 @@ function PostForm() {
         title: "",
         body: "",
         photos: "",
-        user_id: 1
+        user_id: 7
     })
 
     const handleChange = (e) => {

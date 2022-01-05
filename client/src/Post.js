@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-
+import {Link, Route} from 'react-router-dom'
 import styled from 'styled-components'
 import PostComment from './PostComment'
 
@@ -92,7 +92,6 @@ function Post({post, setPosts, feedPosts}) {
         'Content-Type': 'application/json'
     }
     })
-    // console.log(postToRemove)
         .then(res => res.json())
         .then(data => {
         setPosts((data) =>
@@ -216,14 +215,16 @@ function Post({post, setPosts, feedPosts}) {
     return (
         <PostStyle>
             <div className="post-like">
+            <ButtonStyle className="like-button">
                 {isLiked ? 
                 <button type="button" onClick={handleUnlike}>♥</button> 
                 :
                 <button type="button" onClick={handleLike}>♡</button>
                 }
+            </ButtonStyle>
                 
             </div>
-{isSelected ? 
+        {isSelected ? 
         <FormStyle>   
         <form onSubmit={handleSubmit}>
             <p>
@@ -258,15 +259,18 @@ function Post({post, setPosts, feedPosts}) {
         </form>
         </FormStyle> 
         :
+
         <div>
             {ownPost()}
         </div>
         }
-        
-            
+       
             <div className="post-content">
                 <h1>{post.title}</h1>
-                <h3>By: {post.user.username}</h3>
+                <Link to={`/user/${post.user.id}`}>
+                    <h3 id="profile-link">By: {post.user.username}</h3>
+                </Link>
+                
                 <img src={post.photos} alt={post.title} />
                 <p>
                     {post.body}
@@ -276,8 +280,11 @@ function Post({post, setPosts, feedPosts}) {
                 <div>
                     {openComments ? 
                     <div>
+                        <ButtonStyle>
                         <button type="button" onClick={handleExpand}>Comments ▲</button>
+                        </ButtonStyle>
                         {renderComments}
+                        <CommentFormStyle>
                         <form>
                         <p>
                             <input
@@ -292,9 +299,14 @@ function Post({post, setPosts, feedPosts}) {
                             <button type="submit" onClick={handleNewComment}>Comment</button>
                         </p>
                         </form> 
+                        </CommentFormStyle>
                         </div>
                         : 
+                        <ButtonStyle>
                         <button type="button" onClick={handleExpand}><FontAwesomeIcon icon={faComments}></FontAwesomeIcon> Comments ▼</button>
+                        </ButtonStyle>
+
+                      
                         } 
                 </div> 
             </div>
@@ -315,6 +327,35 @@ const PostStyle = styled.div`
     border-radius: 5px;
     border: 5px solid #afdfd4;
     box-shadow: 0 0 0 10px #f3eedb;
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    /* .post-content h1 {
+        position: relative;
+    }
+
+    .like-button {
+
+        display: inline-block;
+        float: left;
+    }
+
+    
+
+    .delete-button {
+        display: inline-block;
+        float: right;
+    }
+
+    .edit-button {
+        display: inline;
+        position: relative;
+        
+        float: right;
+    } */
     
 `
 const ButtonStyle = styled.div`
@@ -323,7 +364,7 @@ const ButtonStyle = styled.div`
             margin-bottom: 5px;
             margin-top: 10px;
             padding: 6px 20px 6px 20px;
-            font-size: 18px;
+            /* font-size: 18px; */
             background: #afdfd4;
             border-radius: 20px;
             border: 2px solid #9fd0c1;
@@ -381,8 +422,7 @@ const FormStyle = styled.div`
         margin-bottom: 5px;
         margin-top: 10px;
         padding: 3px 10px 3px 10px;
-        font-size: 16px
-
+        font-size: 16px;
         background: #afdfd4;
         border-radius: 20px;
         border: 2px solid #9fd0c1;
@@ -410,4 +450,32 @@ const FormStyle = styled.div`
     }
 
 
+`
+
+const CommentFormStyle = styled.div`
+
+    input {
+        margin: auto;
+        width: 97%;
+        border: 2px solid white;
+        border-bottom: 2px solid #afdfd4;
+        border-radius: 10px;
+        height: 40px;
+        padding-left: 10px;
+        font-family: Georgia;
+    }
+
+    button {
+        display: inline-block;
+        margin-bottom: 0px;
+        margin-top: 5px;
+        padding: 3px 10px 3px 10px;
+        font-size: 16px;
+        background: #afdfd4;
+        border-radius: 20px;
+        border: 2px solid #9fd0c1;
+        font-family: Georgia, serif;
+        cursor: pointer;
+
+    }
 `
