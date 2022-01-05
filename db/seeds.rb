@@ -6,8 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+
 u1 = User.create(name: 'bob', username: 'bob123', email: 'bob@gmail.com')
 u2 = User.create(name: 'landon', username: 'landon123', email: 'landon@gmail.com')
+
 
 p1 = Post.create(title: 'hello', body: 'bye', user_id: u1.id)
 

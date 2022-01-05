@@ -3,8 +3,35 @@ import {Link, Route} from 'react-router-dom'
 import styled from 'styled-components'
 import PostComment from './PostComment'
 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faComments } from '@fortawesome/free-solid-svg-icons'
+
+
 function Post({post, setPosts, feedPosts}) {
     
+    // pass id from user as props
+    const userId = 2;
+
+    const ownPost = () => {
+        if (post.user.id === userId) {
+            return (
+                <div>
+                    <ButtonStyle>
+                        <button type="button" onClick={handleNewPost}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit Post</button>
+                    </ButtonStyle>
+                    <ButtonStyle>
+                        <button onClick={handleRemovePost} id={parseInt(post.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
+                    </ButtonStyle> 
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+
+
     const [newComment, setNewComment] = useState({
         text: "",
         post_id: post.id,
@@ -232,13 +259,12 @@ function Post({post, setPosts, feedPosts}) {
         </form>
         </FormStyle> 
         :
-        <ButtonStyle className="edit-button">
-            <button type="button" onClick={handleNewPost}>Edit Post</button>
-        </ButtonStyle>
+
+        <div>
+            {ownPost()}
+        </div>
         }
-        <ButtonStyle>
-                <button onClick={handleRemovePost} className="delete-button" id={parseInt(post.id)}>Delete</button>
-            </ButtonStyle>
+       
             <div className="post-content">
                 <h1>{post.title}</h1>
                 <Link to={`/user/${post.user.id}`}>
@@ -277,8 +303,10 @@ function Post({post, setPosts, feedPosts}) {
                         </div>
                         : 
                         <ButtonStyle>
-                        <button type="button" onClick={handleExpand}>Comments ▼</button>
+                        <button type="button" onClick={handleExpand}><FontAwesomeIcon icon={faComments}></FontAwesomeIcon> Comments ▼</button>
                         </ButtonStyle>
+
+                      
                         } 
                 </div> 
             </div>
