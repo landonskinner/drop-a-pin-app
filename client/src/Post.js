@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import PostComment from './PostComment'
 
-function Post({post, setPosts}) {
+function Post({post, setPosts, feedPosts}) {
     
     const [newComment, setNewComment] = useState({
         text: "",
@@ -65,14 +65,14 @@ function Post({post, setPosts}) {
         'Content-Type': 'application/json'
     }
     })
+    // console.log(postToRemove)
         .then(res => res.json())
         .then(data => {
-        console.log(data);
         setPosts((data) =>
-            data.filter((data) => data.id !== postToRemove.id)
+            feedPosts.filter((data) => data.id !== parseInt(postToRemove.target.id))
             );
-        }
-    )};
+        })
+    };
 
     const handleNewPost = () => {
         setIsSelected(true)
@@ -95,7 +95,7 @@ function Post({post, setPosts}) {
 
     const renderComments = post.comments.map(comment => <PostComment key={comment.id} comment={comment} />)
     
-    const handleChange = (e) => {
+    const handleComment = (e) => {
         console.log(newComment)
         setNewComment({ ...newComment, [e.target.name]: e.target.value });
     };
@@ -235,26 +235,18 @@ function Post({post, setPosts}) {
             <button type="button" onClick={handleNewPost}>Edit Post</button>
         </ButtonStyle>
         }
-        </div>
-            <button onClick={handleRemovePost}>Delete</button>
+        <ButtonStyle>
+                <button onClick={handleRemovePost} id={parseInt(post.id)}>Delete</button>
             </ButtonStyle>
-            <img src="" />
-            <h1>{post.title}</h1>
-            <h3>{post.user.username}</h3>
-            <img src={post.photos} alt={post.title} />
-            <p>
-                {post.body}
-            </p>
             <div className="post-content">
-                <img src={post.photos} />
                 <h1>{post.title}</h1>
                 <h3>By: {post.user.username}</h3>
+                <img src={post.photos} alt={post.title} />
                 <p>
                     {post.body}
                 </p>
             </div>
             <div className="post-comments">
-                 
                 <div>
                     {openComments ? 
                     <div>
@@ -267,7 +259,7 @@ function Post({post, setPosts}) {
                                 name="text"
                                 placeholder="Participate in the conversation!"
                                 value={newComment.text}
-                                onChange={(e) => handleChange(e)}
+                                onChange={(e) => handleComment(e)}
                             />
                         </p>
                         <p>
@@ -279,10 +271,10 @@ function Post({post, setPosts}) {
                         <button type="button" onClick={handleExpand}>Comments ▼</button>
                         } 
                 </div> 
-                
-                
             </div>
+            
     </PostStyle>
+    )
 }
 
 export default Post
