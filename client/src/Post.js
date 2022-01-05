@@ -11,6 +11,27 @@ import { faComments } from '@fortawesome/free-solid-svg-icons'
 
 function Post({post, setPosts, feedPosts}) {
     
+    // pass id from user as props
+    const userId = 2;
+
+    const ownPost = () => {
+        if (post.user.id === userId) {
+            return (
+                <div>
+                    <ButtonStyle>
+                        <button type="button" onClick={handleNewPost}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit Post</button>
+                    </ButtonStyle>
+                    <ButtonStyle>
+                        <button onClick={handleRemovePost} id={parseInt(post.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
+                    </ButtonStyle> 
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+
+
     const [newComment, setNewComment] = useState({
         text: "",
         post_id: post.id,
@@ -237,13 +258,12 @@ function Post({post, setPosts, feedPosts}) {
         </form>
         </FormStyle> 
         :
-        <ButtonStyle>
-            <button type="button" onClick={handleNewPost}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit Post</button>
-        </ButtonStyle>
+        <div>
+            {ownPost()}
+        </div>
         }
-        <ButtonStyle>
-                <button onClick={handleRemovePost} id={parseInt(post.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
-            </ButtonStyle>
+        
+            
             <div className="post-content">
                 <h1>{post.title}</h1>
                 <h3>By: {post.user.username}</h3>
