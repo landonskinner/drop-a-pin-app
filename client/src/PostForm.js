@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components';
 
+
 function PostForm() {
 
     const [isSelected, setIsSelected] = useState(false)
