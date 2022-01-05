@@ -24,7 +24,7 @@ function PostContainer({search}) {
     // }
     // console.log(filteredPosts)
     
-    const renderPosts = feedPosts.map(post => <Post key={post.id} post={post} />)
+    const renderPosts = feedPosts.map(post => <Post key={post.id} post={post} feedPosts={feedPosts} setPosts={setFeedPosts}/>)
 
     if (!feedPosts[0]) return <div>Loading...</div>
     return (
