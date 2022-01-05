@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Post from './Post'
 
-function PostContainer({search}) {
+function PostContainer({search, id}) {
 
     const [feedPosts, setFeedPosts] = useState([])
     // fetch to database for rendering of posts
@@ -12,19 +12,24 @@ function PostContainer({search}) {
             setFeedPosts(posts)
         })
     }, [])
-    console.log(search)
 
-    // const filteredPosts = () => {
-    //     if (search !== undefined) {
-    //         return feedPosts.filter(post => post.title.toLowerCase().includes(search.toLowerCase()))
-    //     } else {
-    //         return feedPosts
-    //     }
-        
-    // }
-    // console.log(filteredPosts)
-    
-    const renderPosts = feedPosts.map(post => <Post key={post.id} post={post} feedPosts={feedPosts} setPosts={setFeedPosts}/>)
+    const filteredPosts = () => {
+        if (!!search) {
+            return feedPosts.filter(post => {
+                console.log(post)
+                return post.title.toLowerCase().includes(search.toLowerCase()) || post.user.username.toLowerCase().includes(search.toLowerCase())
+            })
+        } else if (!!id) {
+            return feedPosts.filter(post => {
+                console.log(post, id)
+                return post.user.id === parseInt(id)
+            })
+        } else {
+            return feedPosts
+        }
+    }
+
+    const renderPosts = filteredPosts().map(post => <Post key={post.id} page_id={id} post={post} feedPosts={feedPosts} setPosts={setFeedPosts}/>)
 
     if (!feedPosts[0]) return <div>Loading...</div>
     return (
@@ -35,3 +40,4 @@ function PostContainer({search}) {
 }
 
 export default PostContainer
+

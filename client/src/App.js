@@ -17,6 +17,9 @@ function App() {
         <Route path="/search">
           <Search />
         </Route>
+        <Route path="/user/:id">
+          <AccountPage />
+        </Route>
       </Switch>
       
       
