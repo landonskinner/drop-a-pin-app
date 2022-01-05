@@ -3,6 +3,12 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import PostComment from './PostComment'
 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faComments } from '@fortawesome/free-solid-svg-icons'
+
+
 function Post({post, setPosts, feedPosts}) {
     
     const [newComment, setNewComment] = useState({
@@ -232,11 +238,11 @@ function Post({post, setPosts, feedPosts}) {
         </FormStyle> 
         :
         <ButtonStyle>
-            <button type="button" onClick={handleNewPost}>Edit Post</button>
+            <button type="button" onClick={handleNewPost}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit Post</button>
         </ButtonStyle>
         }
         <ButtonStyle>
-                <button onClick={handleRemovePost} id={parseInt(post.id)}>Delete</button>
+                <button onClick={handleRemovePost} id={parseInt(post.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
             </ButtonStyle>
             <div className="post-content">
                 <h1>{post.title}</h1>
@@ -268,7 +274,7 @@ function Post({post, setPosts, feedPosts}) {
                         </form> 
                         </div>
                         : 
-                        <button type="button" onClick={handleExpand}>Comments ▼</button>
+                        <button type="button" onClick={handleExpand}><FontAwesomeIcon icon={faComments}></FontAwesomeIcon> Comments ▼</button>
                         } 
                 </div> 
             </div>

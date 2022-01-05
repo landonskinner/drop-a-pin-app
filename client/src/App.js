@@ -4,6 +4,8 @@ import NavBar from './NavBar';
 import AccountPage from './AccountPage';
 import Header from './Header';
 import Search from './Search';
+import HomePage from './HomePage';
+
 
 function App() {
   return (
@@ -11,6 +13,9 @@ function App() {
       <Header />
       <NavBar />
       <Switch>
+      <Route path="/home">
+          <HomePage />
+        </Route>
         <Route path="/account">
           <AccountPage />
         </Route>
@@ -18,7 +23,6 @@ function App() {
           <Search />
         </Route>
       </Switch>
-      
       
     </div>
   );
