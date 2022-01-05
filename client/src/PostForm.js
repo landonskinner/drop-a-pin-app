@@ -8,8 +8,8 @@ function PostForm() {
     const [formData, setFormData] = useState({
         title: "",
         body: "",
-        photo: "",
-        user_id: ""
+        photos: "",
+        user_id: 1
     })
 
     const handleChange = (e) => {
@@ -17,32 +17,34 @@ function PostForm() {
     };
 
     const handleSubmit = (e) => {
-        // const configObj = {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(formData),
-        //   };
+        const configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          };
           e.preventDefault();
-          setIsSelected(false)
+          
         // update fetch path once completed on backend  
-        //   fetch("/login", configObj).then((resp) => {
-        //     if (resp.ok) {
-        //       resp.json().then(() => {
-        //         setFormData({
-        //             title: "",
-        //             body: "",
-        //             photo: "",
-        //             user_id: ""
-        //         });
-        //       });
-        //     } else {
-        //       resp.json().then((errors) => {
-        //         console.error(errors);
-        //       });
-        //     }
-        //   });
+          fetch("/posts", configObj).then((resp) => {
+            if (resp.ok) {
+              resp.json().then(() => {
+                  console.log(formData)
+                setFormData({
+                    title: "",
+                    body: "",
+                    photos: "",
+                    user_id: 1
+                });
+                setIsSelected(false);
+              });
+            } else {
+              resp.json().then((errors) => {
+                console.error(errors);
+              });
+            }
+          });
     }
 
     const handleNewPost = () => {
@@ -73,10 +75,10 @@ function PostForm() {
                 />
             </p>
             <p>
-                <label htmlFor="photo">Photos </label>
+                <label htmlFor="photos">Photos </label>
                 <input
                     type="text"
-                    name="photo"
+                    name="photos"
                     value={formData.photo}
                     onChange={(e) => handleChange(e)}
                 />
