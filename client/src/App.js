@@ -3,6 +3,7 @@ import {Switch, Route} from 'react-router-dom';
 import NavBar from './NavBar';
 import AccountPage from './AccountPage';
 import Header from './Header';
+import Search from './Search';
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
         <Route path="/account">
           <AccountPage />
         </Route>
-
+        <Route path="/search">
+          <Search />
+        </Route>
       </Switch>
       
       

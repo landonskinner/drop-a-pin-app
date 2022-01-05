@@ -9,8 +9,8 @@ function PostForm() {
     const [formData, setFormData] = useState({
         title: "",
         body: "",
-        photo: "",
-        user_id: ""
+        photos: "",
+        user_id: 1
     })
 
     const handleChange = (e) => {
@@ -21,29 +21,31 @@ function PostForm() {
         const configObj = {
             method: "POST",
             headers: {
-            "Content-Type": "application/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify(formData),
-        };
-        e.preventDefault();
-        setIsSelected(false)
-        
-        fetch("/posts", configObj).then((resp) => {
+          };
+          e.preventDefault();
+          
+        // update fetch path once completed on backend  
+          fetch("/posts", configObj).then((resp) => {
             if (resp.ok) {
-            resp.json().then(() => {
+              resp.json().then(() => {
+                  console.log(formData)
                 setFormData({
                     title: "",
                     body: "",
-                    photo: "",
-                    user_id: ""
+                    photos: "",
+                    user_id: 1
                 });
-            });
+                setIsSelected(false);
+              });
             } else {
-            resp.json().then((errors) => {
+              resp.json().then((errors) => {
                 console.error(errors);
-            });
+              });
             }
-        });
+          });
     }
 
     const handleNewPost = () => {
@@ -74,10 +76,10 @@ function PostForm() {
                 />
             </p>
             <p>
-                <label htmlFor="photo">Photos </label>
+                <label htmlFor="photos">Photos </label>
                 <input
                     type="text"
-                    name="photo"
+                    name="photos"
                     value={formData.photo}
                     onChange={(e) => handleChange(e)}
                 />
