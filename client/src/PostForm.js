@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components';
 
+
 function PostForm() {
 
     const [isSelected, setIsSelected] = useState(false)
@@ -17,32 +18,32 @@ function PostForm() {
     };
 
     const handleSubmit = (e) => {
-        // const configObj = {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(formData),
-        //   };
-          e.preventDefault();
-          setIsSelected(false)
-        // update fetch path once completed on backend  
-        //   fetch("/login", configObj).then((resp) => {
-        //     if (resp.ok) {
-        //       resp.json().then(() => {
-        //         setFormData({
-        //             title: "",
-        //             body: "",
-        //             photo: "",
-        //             user_id: ""
-        //         });
-        //       });
-        //     } else {
-        //       resp.json().then((errors) => {
-        //         console.error(errors);
-        //       });
-        //     }
-        //   });
+        const configObj = {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        };
+        e.preventDefault();
+        setIsSelected(false)
+        
+        fetch("/posts", configObj).then((resp) => {
+            if (resp.ok) {
+            resp.json().then(() => {
+                setFormData({
+                    title: "",
+                    body: "",
+                    photo: "",
+                    user_id: ""
+                });
+            });
+            } else {
+            resp.json().then((errors) => {
+                console.error(errors);
+            });
+            }
+        });
     }
 
     const handleNewPost = () => {
