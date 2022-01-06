@@ -6,6 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
 import { Button } from "./styles";
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 function NavBar({setUser}) {
     function handleLogoutClick() {
@@ -22,9 +23,8 @@ function NavBar({setUser}) {
                 <NavLink to="/account"><li><FontAwesomeIcon icon={faUser}></FontAwesomeIcon> Account</li></NavLink>
                 <NavLink to="/search"><li><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon> Search</li></NavLink>
 
-                <Button variant="outline" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-          Logout</li>
-        </Button>
+                <a variant="outline" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSignOutAlt}/> Logout</li>
+        </a>
             </div>
         </HeaderStyle>
     )

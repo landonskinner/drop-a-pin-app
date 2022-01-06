@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 const Label = styled.label`
-  color: #363636;
   display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+  text-align:center;
+  margin-bottom: 5px;
+  font-size: 18px;
+  /* border-top: 2px solid #9fd0c1; */
+  /* border-bottom: 2px solid #9fd0c1; */
 `;
 
 export default Label;

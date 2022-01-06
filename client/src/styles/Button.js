@@ -2,12 +2,12 @@ import styled from "styled-components";
 
 const COLORS = {
   primary: {
-    "--main": "indigo",
-    "--accent": "white",
+    "--main": "#afdfd4",
+    "--accent": "black",
   },
   secondary: {
-    "--main": "lavenderblush",
-    "--accent": "indigo",
+    "--main": "#afdfd4",
+    "--accent": "black",
   },
 };
 
@@ -23,12 +23,16 @@ function Button({ variant = "fill", color = "primary", ...props }) {
 }
 
 const ButtonBase = styled.button`
-  cursor: pointer;
-  font-size: 1rem;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 8px 16px;
-  text-decoration: none;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    padding: 6px 20px 6px 20px;
+    background: #afdfd4;
+    border-radius: 20px;
+    border: 2px solid #9fd0c1;
+    font-family: Georgia, serif;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 `;
 
 const FillButton = styled(ButtonBase)`
@@ -36,7 +40,7 @@ const FillButton = styled(ButtonBase)`
   color: var(--accent);
 
   &:hover {
-    opacity: 0.9;
+    background: #7fa69a;
   }
 `;
 
@@ -46,7 +50,7 @@ const OutlineButton = styled(ButtonBase)`
   border: 2px solid var(--main);
 
   &:hover {
-    background: hsl(235deg 85% 97%);
+    background: #7fa69a;
   }
 `;
 

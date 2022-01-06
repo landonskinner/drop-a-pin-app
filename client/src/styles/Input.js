@@ -6,10 +6,13 @@ const Input = styled.input`
   border-color: #dbdbdb;
   -webkit-appearance: none;
   max-width: 100%;
-  width: 100%;
+  width: 95%;
   font-size: 1rem;
   line-height: 1.5;
   padding: 4px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export default Input;
