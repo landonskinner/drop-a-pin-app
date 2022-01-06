@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Switch, Route, Navigate } from "react-router-dom";
 
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
@@ -7,7 +7,7 @@ import SignupForm from "./SignupForm";
 function LoggedOutApp({ setCurrentUser }) {
   return (
     <div>
-      <Routes>
+      <Switch>
         <Route
           exact
           path="/"
@@ -19,7 +19,7 @@ function LoggedOutApp({ setCurrentUser }) {
           path="/signup"
           element={<SignupForm setCurrentUser={setCurrentUser} />}
         />
-      </Routes>
+      </Switch>
     </div>
   );
 }
