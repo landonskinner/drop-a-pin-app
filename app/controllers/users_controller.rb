@@ -9,13 +9,9 @@ class UsersController < ApplicationController
         render json: user, status: :created
     end
 
-    def me 
-        if current_user 
-            render json: current_user, status: :ok
-        else 
-            render json: "Not authenticated", status: :unauthorized
-        end
-    end
+    def show
+        render json: @current_user
+      end
 
     def destroy 
         user = User.find(params[:id])

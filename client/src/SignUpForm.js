@@ -1,21 +1,33 @@
 import React, { useState } from "react";
-import { Button, Error, Input, FormField, Label } from "./styles";
+import { Button, Error, Input, FormField, Label, Textarea } from "./styles";
 
-function LoginForm({ onLogin }) {
+function SignUpForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  // const [bio, setBio] = useState("");
   const [errors, setErrors] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
+    setErrors([]);
     setIsLoading(true);
-    fetch("/login", {
+    fetch("/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({
+        name,
+        username,
+        email,
+        password,
+        // password_confirmation: passwordConfirmation,
+        // image_url: imageUrl,
+        // bio,
+      }),
     }).then((r) => {
       setIsLoading(false);
       if (r.ok) {
@@ -43,15 +55,31 @@ function LoginForm({ onLogin }) {
         <Input
           type="password"
           id="password"
-          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
         />
       </FormField>
       <FormField>
-        <Button variant="fill" color="primary" type="submit">
-          {isLoading ? "Loading..." : "Login"}
-        </Button>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </FormField>
+      <FormField>
+        <Label htmlFor="name">Name Image</Label>
+        <Input
+          type="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </FormField>
+      <FormField>
+        <Button type="submit">{isLoading ? "Loading..." : "Sign Up"}</Button>
       </FormField>
       <FormField>
         {errors.map((err) => (
@@ -62,4 +90,4 @@ function LoginForm({ onLogin }) {
   );
 }
 
-export default LoginForm;
+export default SignUpForm;

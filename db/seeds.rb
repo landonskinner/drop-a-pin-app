@@ -7,8 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 
-u1 = User.create(name: 'bob', username: 'bob123', email: 'bob@gmail.com')
-u2 = User.create(name: 'landon', username: 'landon123', email: 'landon@gmail.com')
+u1 = User.create(name: 'bob', username: 'bob123', email: 'bob@gmail.com', password: 'password')
+u2 = User.create(name: 'landon', username: 'landon123', email: 'landon@gmail.com', password: 'password')
 
 
 p1 = Post.create(title: 'hello', body: 'bye', user_id: u1.id)
