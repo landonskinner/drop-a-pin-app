@@ -10,8 +10,6 @@ import HomePage from './HomePage';
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Login from "./Login";
-// import LoggedInApp from "./components/LoggedInApp";
-// import LoggedOutApp from "./components/LoggedOutApp";
 
 
 function App() {
