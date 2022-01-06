@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  font-family: Georgia, serif;
+  background: #ecf6f3;
 }
 
 .App-logo {
@@ -35,4 +37,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+img {
+  max-width: 450px;
 }
