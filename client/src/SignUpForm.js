@@ -61,21 +61,21 @@ function SignUpForm({ onLogin }) {
         />
       </FormField>
       <FormField>
+        <Label htmlFor="name">Name</Label>
+        <Input
+          type="name"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </FormField>
+      <FormField>
         <Label htmlFor="email">Email</Label>
         <Input
           type="email"
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        />
-      </FormField>
-      <FormField>
-        <Label htmlFor="name">Name Image</Label>
-        <Input
-          type="name"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
         />
       </FormField>
       <FormField>
