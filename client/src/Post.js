@@ -12,7 +12,7 @@ import { faComments } from '@fortawesome/free-solid-svg-icons'
 function Post({post, setPosts, feedPosts}) {
     
     // pass id from user as props
-    const userId = 2;
+    const userId = 3;
 
     const ownPost = () => {
         if (post.user.id === userId) {
@@ -382,20 +382,17 @@ const FormStyle = styled.div`
 
     background: #f3eedb;
     padding: 10px;
-    width: 50%;
+    width: 90%;
     margin: auto;
     border-radius: 5px;
-    border: 5px solid #afdfd4;
-    box-shadow: 0 0 0 10px #f3eedb;
-
 
     textarea {
         resize: none;
         display: block;
         margin: auto;
-        width: 80%;
+        width: 97%;
         height: 300px;
-        border: 3px solid #afdfd4;
+        border: 2px solid #afdfd4;
         border-radius: 4px;
     }
 
