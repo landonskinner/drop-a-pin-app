@@ -5,14 +5,26 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { Button } from "./styles";
 
-function NavBar() {
+function NavBar({setUser}) {
+    function handleLogoutClick() {
+        fetch("/logout", { method: "DELETE" }).then((r) => {
+          if (r.ok) {
+            setUser(null);
+          }
+        });
+      }
     return (
         <HeaderStyle>
             <div className="navigation">
                 <NavLink to="/home" exact><li><FontAwesomeIcon icon={faHome}></FontAwesomeIcon> Feed</li></NavLink>
                 <NavLink to="/account"><li><FontAwesomeIcon icon={faUser}></FontAwesomeIcon> Account</li></NavLink>
                 <NavLink to="/search"><li><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon> Search</li></NavLink>
+
+                <Button variant="outline" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+          Logout</li>
+        </Button>
             </div>
         </HeaderStyle>
     )

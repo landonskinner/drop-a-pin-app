@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import PostContainer from './PostContainer'
 import styled from 'styled-components'
 
-function Search() {
+function Search({user}) {
 
     const [search, setSearch] = useState('')
 
@@ -26,7 +26,7 @@ function Search() {
                 </p>
             </form>
             </SearchStyle>
-            <PostContainer search={search}/>
+            <PostContainer search={search} user={user}/>
         </div>
     )
 }

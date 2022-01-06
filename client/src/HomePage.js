@@ -2,10 +2,10 @@ import React from 'react'
 import PostContainer from './PostContainer'
 
 
-function HomePage() {
+function HomePage({user}) {
     return (
         <div>
-            <PostContainer />
+            <PostContainer user={user}/>
         </div>
     )
 }

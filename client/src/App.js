@@ -14,6 +14,7 @@ import Login from "./Login";
 
 function App() {
   const [user, setUser] = useState(null);
+  console.log(user)
 
   useEffect(() => {
     // auto-login
@@ -34,13 +35,13 @@ function App() {
       <main>
       <Switch>
       <Route path="/home">
-          <HomePage />
+          <HomePage user={user}/>
         </Route>
         <Route path="/account">
-          <AccountPage />
+          <AccountPage user={user} name="account"/>
         </Route>
         <Route path="/search">
-          <Search />
+          <Search user={user}/>
         </Route>
         <Route path="/user/:id">
           <AccountPage />
