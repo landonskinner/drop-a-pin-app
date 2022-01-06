@@ -28,9 +28,10 @@ function App() {
     });
   }, []);
 
-  if (!authenticated) {
-    return <div></div>;
-  }
+
+  // if (!authenticated) {
+  //   return <div></div>;
+  // }
 
   return (
     <div className="App">
@@ -39,11 +40,17 @@ function App() {
       <Header />
       <NavBar />
       <Switch>
+      <Route path="/home">
+          <HomePage />
+        </Route>
         <Route path="/account">
           <AccountPage />
         </Route>
         <Route path="/search">
           <Search />
+        </Route>
+        <Route path="/user/:id">
+          <AccountPage />
         </Route>
       </Switch>
       
