@@ -1,12 +1,16 @@
 class PostsController < ApplicationController
     def index
-        posts = Post.all
+        posts = Post.all.order('created_at DESC')
         render json: posts
     end
 
     def create
         post = Post.create(post_params)
-        render json: post
+        if post.valid?
+            render json: post
+        else
+            render json: {errors: post.errors}, status: :unprocessable_entity
+        end
     end
 
     def show

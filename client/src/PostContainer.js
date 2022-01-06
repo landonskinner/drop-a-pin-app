@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Post from './Post'
 
-function PostContainer({search, id, user, name}) {
+function PostContainer({search, id, user, name, setEdited, edited}) {
 
     const [feedPosts, setFeedPosts] = useState([])
     // fetch to database for rendering of posts
@@ -31,7 +31,7 @@ function PostContainer({search, id, user, name}) {
         }
     }
 
-    const renderPosts = filteredPosts().map(post => <Post key={post.id} user={user} page_id={id} post={post} feedPosts={feedPosts} setPosts={setFeedPosts}/>)
+    const renderPosts = filteredPosts().map(post => <Post key={post.id} user={user} page_id={id} post={post} feedPosts={feedPosts} setPosts={setFeedPosts} setEdited={setEdited} edited={edited}/>)
 
     if (!feedPosts[0]) return <div>Loading...</div>
     return (

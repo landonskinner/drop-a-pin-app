@@ -1,17 +1,21 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import earth from './images/earth.jpg'
 
 
-function PostForm({user}) {
-
+function PostForm({user, setSubmitted, submitted}) {
+    
     const [isSelected, setIsSelected] = useState(false)
+    
 
     const [formData, setFormData] = useState({
         title: "",
         body: "",
-        photos: "",
+        photos: earth,
         user_id: user.id
     })
+ 
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,7 +29,6 @@ function PostForm({user}) {
             },
             body: JSON.stringify(formData),
           };
-          e.preventDefault();
           
         // update fetch path once completed on backend  
           fetch("/posts", configObj).then((resp) => {
@@ -35,14 +38,16 @@ function PostForm({user}) {
                 setFormData({
                     title: "",
                     body: "",
-                    photos: "",
+                    photos: earth,
                     user_id: user.id
                 });
+                
                 setIsSelected(false);
+                setSubmitted(!submitted)
               });
             } else {
               resp.json().then((errors) => {
-                console.error(errors);
+                alert('Title and post content must be completed')
               });
             }
           });
@@ -106,9 +111,11 @@ const FormStyle = styled.div`
     padding: 10px;
     width: 50%;
     margin: auto;
+    margin-top: 20px;
     border-radius: 5px;
     border: 5px solid #afdfd4;
     box-shadow: 0 0 0 10px #f3eedb;
+    
 
 
     textarea {

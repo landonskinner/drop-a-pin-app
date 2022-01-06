@@ -9,8 +9,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
 
 
-function Post({post, setPosts, feedPosts, user}) {
-    
+function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
     // pass id from user as props
     const userId = user.id;
     console.log(userId)
@@ -44,12 +43,23 @@ function Post({post, setPosts, feedPosts, user}) {
     const [openComments, setOpenComments] = useState(false)
     
     const [isSelected, setIsSelected] = useState(false)
+    // const [editData, setEditData] = useState({})
+
+    
+
+    // <input type="text" name="myField1" value="<?php echo isset($_POST['myField1']) ? $_POST['myField1'] : '' ?>" />
 
     const [formData, setFormData] = useState({
         title: "",
         body: "",
         photo: ""
     })
+
+    useEffect(() => {
+        fetch(`/posts/${post.id}`)
+        .then(resp => resp.json())
+        .then(post => setFormData(post))
+    }, [isSelected])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -65,9 +75,7 @@ function Post({post, setPosts, feedPosts, user}) {
             },
             body: JSON.stringify(formData),
         };
-        e.preventDefault();
-        setIsSelected(false)
-        
+
         fetch(`/posts/${id}`, configObj).then((resp) => {
             if (resp.ok) {
             resp.json().then(() => {
@@ -76,6 +84,9 @@ function Post({post, setPosts, feedPosts, user}) {
                     body: "",
                     photo: ""
                 });
+                console.log(edited)
+                setEdited(!edited)
+                setIsSelected(false)
             });
             } else {
             resp.json().then((errors) => {
@@ -265,12 +276,13 @@ function Post({post, setPosts, feedPosts, user}) {
         }
        
             <div className="post-content">
+            <img src={post.photos} alt={post.title} />
                 <h1>{post.title}</h1>
                 <Link to={`/user/${post.user.id}`}>
                     <h3 id="profile-link">By: {post.user.username}</h3>
                 </Link>
                 
-                <img src={post.photos} alt={post.title} />
+                
                 <p>
                     {post.body}
                 </p>
@@ -280,7 +292,7 @@ function Post({post, setPosts, feedPosts, user}) {
                     {openComments ? 
                     <div>
                         <ButtonStyle>
-                        <button type="button" onClick={handleExpand}>Comments ▲</button>
+                        <button type="button" className="comment-button" onClick={handleExpand}><FontAwesomeIcon icon={faComments} /> Comments ▲</button>
                         </ButtonStyle>
                         {renderComments}
                         <CommentFormStyle>
@@ -302,7 +314,7 @@ function Post({post, setPosts, feedPosts, user}) {
                         </div>
                         : 
                         <ButtonStyle>
-                        <button type="button" onClick={handleExpand}><FontAwesomeIcon icon={faComments}></FontAwesomeIcon> Comments ▼</button>
+                        <button type="button" className="comment-button" onClick={handleExpand}><FontAwesomeIcon icon={faComments}></FontAwesomeIcon> Comments ▼</button>
                         </ButtonStyle>
 
                       
@@ -317,6 +329,8 @@ function Post({post, setPosts, feedPosts, user}) {
 export default Post
 
 const PostStyle = styled.div`
+    
+
     background: #f3eedb;
     padding: 10px;
     width: 50%;
@@ -331,10 +345,37 @@ const PostStyle = styled.div`
         text-decoration: none;
         color: inherit;
     }
+
+    .post-content h1 {
+        position: relative;
+        bottom: 110px;
+        font-family: 'Coming Soon', cursive;
+        font-weight: bold;
+    }
+
+    .post-content h3 {
+        position: relative;
+        font-size: 18px;
+        bottom: 135px;
+        font-family: 'Coming Soon', cursive;
+    }
+
+    .post-content p {
+        text-align: left;
+        margin: auto;
+        position: relative;
+        bottom: 110px;
+        width: 85%;
+        background: white;
+        padding: 15px;
+        border: 2px solid #afdfd4;
+        border-radius: 5px;
+    }
     
     /* .post-content h1 {
         position: relative;
     }
+    
 
     .like-button {
 
@@ -374,6 +415,12 @@ const ButtonStyle = styled.div`
 
         button:hover {
             background: #7fa69a;
+            
+        }
+
+        .comment-button {
+            position: relative;
+            bottom: 50px;
         }
         `
 
