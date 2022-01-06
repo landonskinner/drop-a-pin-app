@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styled from 'styled-components';
 
 
-function PostForm() {
+function PostForm({user}) {
 
     const [isSelected, setIsSelected] = useState(false)
 
@@ -10,7 +10,7 @@ function PostForm() {
         title: "",
         body: "",
         photos: "",
-        user_id: 7
+        user_id: user.id
     })
 
     const handleChange = (e) => {
@@ -36,7 +36,7 @@ function PostForm() {
                     title: "",
                     body: "",
                     photos: "",
-                    user_id: 1
+                    user_id: user.id
                 });
                 setIsSelected(false);
               });

@@ -9,10 +9,11 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
 
 
-function Post({post, setPosts, feedPosts}) {
+function Post({post, setPosts, feedPosts, user}) {
     
     // pass id from user as props
-    const userId = 2;
+    const userId = user.id;
+    console.log(userId)
 
     const ownPost = () => {
         if (post.user.id === userId) {
@@ -35,7 +36,7 @@ function Post({post, setPosts, feedPosts}) {
     const [newComment, setNewComment] = useState({
         text: "",
         post_id: post.id,
-        username: ""
+        username: user.username
     })
 
     const [isLiked, setIsLiked] = useState(false)
@@ -109,7 +110,7 @@ function Post({post, setPosts, feedPosts}) {
         .then(resp => resp.json())
         .then(data => {
             const filtered = data.filter(data => {
-                return (data.post.id === post.id) && (data.username === "bob123")
+                return (data.post.id === post.id) && (data.username === user.username)
             })
             if (!!filtered[0]) {
                 setIsLiked(true)
@@ -161,8 +162,7 @@ function Post({post, setPosts, feedPosts}) {
             },
             body: JSON.stringify({
                 post_id: post.id,
-                username: 'bob123'
-                // change username to be dynamic once sessions is implemented
+                username: user.username
             }),
           };
 
@@ -184,7 +184,7 @@ function Post({post, setPosts, feedPosts}) {
         .then(resp => resp.json())
         .then(data => {
             const filtered = data.filter(data => {
-                return (data.post.id === post.id) && (data.username === "bob123")
+                return (data.post.id === post.id) && (data.username === user.username)
             })
             filtered.map(like => {
                 fetch(`/likes/${like.id}`, {
@@ -210,7 +210,6 @@ function Post({post, setPosts, feedPosts}) {
     const handleExpand = () => {
         setOpenComments(!openComments)
     }
-
 
     return (
         <PostStyle>
