@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faMapPin } from '@fortawesome/free-solid-svg-icons'
 
 function Header() {
     return (
         <HeaderStyle>
             <div className="header">
-                <h1 className="header-title">DropAPin</h1>
+                <h1 className="header-title">DropAPin<FontAwesomeIcon className="pin" icon={faMapPin} ></FontAwesomeIcon></h1>
             </div>
         </HeaderStyle>
     )
@@ -27,7 +29,11 @@ const HeaderStyle = styled.div`
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         margin: 0px;
         text-align: center;
+        font-family: 'Lobster', cursive;
     }
 
+    .pin {
+        color: red
+    }
 
 `

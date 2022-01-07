@@ -18,11 +18,15 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         if (post.user.id === userId) {
             return (
                 <div>
-                    <ButtonStyle>
-                        <button type="button" onClick={handleNewPost}><FontAwesomeIcon icon={faEdit}></FontAwesomeIcon> Edit Post</button>
+                    <ButtonStyle >
+                        {/* <button type="button" onClick={handleNewPost}> */}
+                            <FontAwesomeIcon className="edit" icon={faEdit} onClick={handleNewPost}></FontAwesomeIcon>
+                            {/* </button> */}
                     </ButtonStyle>
                     <ButtonStyle>
-                        <button onClick={handleRemovePost} id={parseInt(post.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
+                        {/* <button onClick={handleRemovePost} id={parseInt(post.id)}> */}
+                            <FontAwesomeIcon className="delete" icon={faTrash}></FontAwesomeIcon>
+                            {/* </button> */}
                     </ButtonStyle> 
                 </div>
             )
@@ -224,16 +228,7 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
 
     return (
         <PostStyle>
-            <div className="post-like">
-            <ButtonStyle className="like-button">
-                {isLiked ? 
-                <button type="button" onClick={handleUnlike}>♥</button> 
-                :
-                <button type="button" onClick={handleLike}>♡</button>
-                }
-            </ButtonStyle>
-                
-            </div>
+            
         {isSelected ? 
         <FormStyle>   
         <form onSubmit={handleSubmit}>
@@ -282,6 +277,16 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
                     <h3 id="profile-link">By: {post.user.username}</h3>
                 </Link>
                 
+                <div className="post-like">
+            <ButtonStyle className="like-button">
+                {isLiked ? 
+                <button type="button" onClick={handleUnlike}>♥</button> 
+                :
+                <button type="button" onClick={handleLike}>♡</button>
+                }
+            </ButtonStyle>
+                
+            </div>
                 
                 <p>
                     {post.body}
@@ -422,6 +427,24 @@ const ButtonStyle = styled.div`
             position: relative;
             bottom: 50px;
         }
+
+        .edit {
+            float: left;
+        }
+
+        .edit:hover {
+            transform: scale(1.2);
+            color: blue
+        }
+
+        .delete {
+            float: right;
+        }
+
+        .delete:hover {
+            transform: scale(1.2);
+            color: red
+        }
         `
 
 const FormStyle = styled.div`
@@ -429,6 +452,7 @@ const FormStyle = styled.div`
     background: #f3eedb;
     padding: 10px;
     width: 50%;
+    min-width: 950px
     margin: auto;
     border-radius: 5px;
     border: 5px solid #afdfd4;

@@ -33,6 +33,10 @@ function NavBar({setUser}) {
 export default NavBar
 
 const HeaderStyle = styled.div`
+*{
+    font-family: 'Caveat', cursive;
+    font-size:20px
+}
 
     .navigation {
         background: #f3eedb;
@@ -58,6 +62,7 @@ const HeaderStyle = styled.div`
     a:hover {
         border-bottom: 2px solid #afdfd4;
         color: #afdfd4;
+        transform: scale(1.2)
     }
 
     li {
