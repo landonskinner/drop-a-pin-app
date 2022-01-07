@@ -47,11 +47,6 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
     const [openComments, setOpenComments] = useState(false)
     
     const [isSelected, setIsSelected] = useState(false)
-    // const [editData, setEditData] = useState({})
-
-    
-
-    // <input type="text" name="myField1" value="<?php echo isset($_POST['myField1']) ? $_POST['myField1'] : '' ?>" />
 
     const [formData, setFormData] = useState({
         title: "",
@@ -230,7 +225,7 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         <PostStyle>
             
         {isSelected ? 
-        <FormStyle>   
+        <FormStyle className="edit-form">   
         <form onSubmit={handleSubmit}>
             <p>
                 <label htmlFor="title">Title </label>
@@ -377,30 +372,9 @@ const PostStyle = styled.div`
         border-radius: 5px;
     }
     
-    /* .post-content h1 {
-        position: relative;
+    .edit-form {
+        margin: auto;
     }
-    
-
-    .like-button {
-
-        display: inline-block;
-        float: left;
-    }
-
-    
-
-    .delete-button {
-        display: inline-block;
-        float: right;
-    }
-
-    .edit-button {
-        display: inline;
-        position: relative;
-        
-        float: right;
-    } */
     
 `
 const ButtonStyle = styled.div`
@@ -459,16 +433,14 @@ const FormStyle = styled.div`
     width: 50%;
     min-width: 950px
     margin: auto;
-    border-radius: 5px;
-    border: 5px solid #afdfd4;
-    box-shadow: 0 0 0 10px #f3eedb;
+    
 
 
     textarea {
         resize: none;
         display: block;
         margin: auto;
-        width: 80%;
+        width: 100%;
         height: 300px;
         border: 3px solid #afdfd4;
         border-radius: 4px;
