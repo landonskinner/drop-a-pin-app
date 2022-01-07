@@ -24,9 +24,9 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
                             {/* </button> */}
                     </ButtonStyle>
                     <ButtonStyle>
-                        {/* <button onClick={handleRemovePost} id={parseInt(post.id)}> */}
-                            <FontAwesomeIcon className="delete" icon={faTrash}></FontAwesomeIcon>
-                            {/* </button> */}
+                        <button className="delete" onClick={handleRemovePost} id={parseInt(post.id)}>
+                            <FontAwesomeIcon className="delete" icon={faTrash}  onClick={handleRemovePost} id={parseInt(post.id)}></FontAwesomeIcon>
+                            </button>
                     </ButtonStyle> 
                 </div>
             )
@@ -276,7 +276,7 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
                 <Link to={`/user/${post.user.id}`}>
                     <h3 id="profile-link">By: {post.user.username}</h3>
                 </Link>
-                
+
                 <div className="post-like">
             <ButtonStyle className="like-button">
                 {isLiked ? 
@@ -430,6 +430,7 @@ const ButtonStyle = styled.div`
 
         .edit {
             float: left;
+            padding-top: 15px;
         }
 
         .edit:hover {
@@ -439,11 +440,15 @@ const ButtonStyle = styled.div`
 
         .delete {
             float: right;
+            border: none;
+            background: none;
+            font-size:18px
         }
 
         .delete:hover {
             transform: scale(1.2);
-            color: red
+            color: red;
+            background: none;
         }
         `
 
