@@ -7,7 +7,7 @@ function Header() {
     return (
         <HeaderStyle>
             <div className="header">
-                <h1 className="header-title">DropAPin<FontAwesomeIcon className="pin" icon={faMapPin} ></FontAwesomeIcon></h1>
+                <h1 className="header-title">DropAPin</h1>
             </div>
         </HeaderStyle>
     )
