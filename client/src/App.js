@@ -1,20 +1,16 @@
 import './App.css';
+import { useState, useEffect } from "react";
 import {Switch, Route} from 'react-router-dom';
 import NavBar from './NavBar';
 import AccountPage from './AccountPage';
 import Header from './Header';
 import Search from './Search';
-
 import HomePage from './HomePage';
-
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import Login from "./Login";
 
-
 function App() {
+
   const [user, setUser] = useState(null);
-  console.log(user)
 
   useEffect(() => {
     // auto-login
@@ -29,10 +25,8 @@ function App() {
 
   return (
     <div className="App">
-      <>
       <Header />
       <NavBar user={user} setUser={setUser} />
-      <main>
       <Switch>
       <Route path="/home">
           <HomePage user={user}/>
@@ -47,9 +41,6 @@ function App() {
           <AccountPage />
         </Route>
       </Switch>
-      </main>
-      </>
-      
     </div>
   );
 }

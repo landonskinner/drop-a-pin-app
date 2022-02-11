@@ -1,46 +1,68 @@
 import { useState } from "react";
-import styled from "styled-components";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
-import { Button } from "./styles";
 import Header from "./Header";
+import styled from "styled-components";
+import { Button } from "./styles";
 
 function Login({ onLogin }) {
+
   const [showLogin, setShowLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState([])
+
+  function handleSubmit(e, route, body) {
+    e.preventDefault();
+    setIsLoading(true);
+    fetch(route, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }).then((r) => {
+      setIsLoading(false);
+      if (r.ok) {
+        r.json().then((user) => onLogin(user));
+      } else {
+        r.json().then((err) => setErrors(err.errors));
+      }
+    });
+  }
 
   return (
     <BackgroundStyle>
-    <Header />
-    <Wrapper>
-      <Logo>Log In</Logo>
-      {showLogin ? (
-        <>
-          <LoginForm onLogin={onLogin} />
-          <Divider />
-          <p>
-            <div className="account-create">
-            Don't have an account? &nbsp;
+      <Header />
+      <FormWrapper>
+        <Logo>Log In</Logo>
+        {showLogin ? (
+          <>
+            <LoginForm handleSubmit={handleSubmit} isLoading={isLoading} errors={errors} />
+            <Divider />
+            <div>
+              <div className="account-create">
+                Don't have an account? &nbsp;
+              </div>
+              <Button color="secondary" onClick={() => setShowLogin(false)}>
+                Sign Up
+              </Button>
             </div>
-            <Button color="secondary" onClick={() => setShowLogin(false)}>
-              Sign Up
-            </Button>
-          </p>
-        </>
-      ) : (
-        <>
-          <SignUpForm onLogin={onLogin} />
-          <Divider />
-          <p>
-            <div className="account-create">
-            Already have an account? &nbsp;
+          </>
+        ) : (
+          <>
+            <SignUpForm handleSubmit={handleSubmit} isLoading={isLoading} errors={errors} />
+            <Divider />
+            <div>
+              <div className="account-create">
+                Already have an account? &nbsp;
+              </div>
+              <Button color="secondary" onClick={() => setShowLogin(true)}>
+                Log In
+              </Button>
             </div>
-            <Button color="secondary" onClick={() => setShowLogin(true)}>
-              Log In
-            </Button>
-          </p>
-        </>
-      )}
-    </Wrapper>
+          </>
+        )}
+      </FormWrapper>
     </BackgroundStyle>
   );
 }
@@ -53,7 +75,7 @@ const Logo = styled.h1`
   text-align: center;
 `;
 
-const Wrapper = styled.section`
+const FormWrapper = styled.section`
     font-family: Georgia, serif;
     background: #f3eedb;
     padding: 10px;
