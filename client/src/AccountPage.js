@@ -1,24 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 import PostForm from './PostForm';
 import PostContainer from './PostContainer';
-import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
 function AccountPage({user, name}) {
 
-    const params = useParams()
-    console.log(params)
+    // const params = useParams()
 
     const [submitted, setSubmitted] = useState(false)
     const [edited, setEdited] = useState(false)
-    console.log(edited)
 
-    
-    useEffect(() => {
-        fetch("/me")
-        .then(resp => resp.json())
-        .then(user => console.log(user))
-    }, [submitted, edited])
+    // useEffect(() => {
+    //     fetch("/me")
+    //     .then(resp => resp.json())
+    //     .then(user => console.log(user))
+    // }, [submitted, edited])
 
     return (
         
@@ -27,12 +24,12 @@ function AccountPage({user, name}) {
                 <h1>{user.name.toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}</h1>
                 <h2>@{user.username}</h2>
             </div>
-            {!!params.id ? 
-            null
-            :
-            <PostForm user={user} setSubmitted={setSubmitted} submitted={submitted}/> 
-            }
-            <PostContainer id={params.id} user={user} name={name} setEdited={setEdited} edited={edited}/>
+            {/* {!!params.id ? 
+                null
+                : */}
+                <PostForm user={user} /> 
+            {/* } */}
+            <PostContainer user={user} name={name} setEdited={setEdited} edited={edited}/>
         </AccountStyle>
     )
 }

@@ -1,30 +1,25 @@
-import React from 'react';
 import { NavLink } from "react-router-dom";
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { faHome } from '@fortawesome/free-solid-svg-icons'
-import { Button } from "./styles";
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faUser, faHome, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 function NavBar({setUser}) {
+
     function handleLogoutClick() {
         fetch("/logout", { method: "DELETE" }).then((r) => {
           if (r.ok) {
             setUser(null);
           }
         });
-      }
+    }
+
     return (
         <HeaderStyle>
             <div className="navigation">
-                <NavLink to="/home" exact><li><FontAwesomeIcon icon={faHome}></FontAwesomeIcon> Feed</li></NavLink>
-                <NavLink to="/account"><li><FontAwesomeIcon icon={faUser}></FontAwesomeIcon> Account</li></NavLink>
-                <NavLink to="/search"><li><FontAwesomeIcon icon={faSearch}></FontAwesomeIcon> Search</li></NavLink>
-
-                <a variant="outline" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSignOutAlt}/> Logout</li>
-        </a>
+                <NavLink to="/home" exact><li><FontAwesomeIcon icon={faHome} /> Feed</li></NavLink>
+                <NavLink to="/account"><li><FontAwesomeIcon icon={faUser} /> Account</li></NavLink>
+                <NavLink to="/search"><li><FontAwesomeIcon icon={faSearch} /> Search</li></NavLink>
+                <a variant="outline" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSignOutAlt} /> Logout</li></a>
             </div>
         </HeaderStyle>
     )
@@ -33,10 +28,10 @@ function NavBar({setUser}) {
 export default NavBar
 
 const HeaderStyle = styled.div`
-*{
-    font-family: 'Caveat', cursive;
-    font-size:20px
-}
+    * {
+        font-family: 'Caveat', cursive;
+        font-size:20px
+    }
 
     .navigation {
         background: #f3eedb;
@@ -71,7 +66,5 @@ const HeaderStyle = styled.div`
         display: inline-block;
         border-radius: 15px;
         line-height: 10px;
-        /* background: white; */
     }
-
 `

@@ -10,44 +10,35 @@ import { faComments } from '@fortawesome/free-solid-svg-icons'
 
 
 function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
-    // pass id from user as props
-    const userId = user.id;
-    console.log(userId)
 
     const ownPost = () => {
-        if (post.user.id === userId) {
+        // if post belongs to logged in user, give post edit and delete functionality
+        if (post.user.id === user.id) {
             return (
                 <div>
-                    <ButtonStyle >
-                        {/* <button type="button" onClick={handleNewPost}> */}
-                            <FontAwesomeIcon className="edit" icon={faEdit} onClick={handleNewPost}></FontAwesomeIcon>
-                            {/* </button> */}
+                    <ButtonStyle>
+                        <button type="button" className="edit" onClick={() => setIsSelected(true)}>
+                            <FontAwesomeIcon icon={faEdit}  />
+                        </button>
                     </ButtonStyle>
                     <ButtonStyle>
-                        <button className="delete" onClick={handleRemovePost} id={parseInt(post.id)}>
-                            <FontAwesomeIcon className="delete" icon={faTrash}  onClick={handleRemovePost} id={parseInt(post.id)}></FontAwesomeIcon>
-                            </button>
+                        <button type="button" className="delete" onClick={handleRemovePost}>
+                            <FontAwesomeIcon icon={faTrash} />
+                        </button>
                     </ButtonStyle> 
                 </div>
             )
-        } else {
-            return null
         }
     }
-
 
     const [newComment, setNewComment] = useState({
         text: "",
         post_id: post.id,
         username: user.username
     })
-
     const [isLiked, setIsLiked] = useState(false)
-
     const [openComments, setOpenComments] = useState(false)
-    
     const [isSelected, setIsSelected] = useState(false)
-
     const [formData, setFormData] = useState({
         title: "",
         body: "",
@@ -64,8 +55,6 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
     
-    let id = post.id
-    
     const handleSubmit = (e) => {
         const configObj = {
             method: "PATCH",
@@ -75,7 +64,7 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
             body: JSON.stringify(formData),
         };
 
-        fetch(`/posts/${id}`, configObj).then((resp) => {
+        fetch(`/posts/${post.id}`, configObj).then((resp) => {
             if (resp.ok) {
             resp.json().then(() => {
                 setFormData({
@@ -95,25 +84,11 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         });
     }
 
-    function handleRemovePost(postToRemove) {
-
-        fetch(`/posts/${id}`, {
-        method: 'DELETE',
-        headers: {
-        'Content-Type': 'application/json'
-    }
-    })
+    function handleRemovePost() {
+        fetch(`/posts/${post.id}`, { method: 'DELETE' })
         .then(res => res.json())
-        .then(data => {
-        setPosts((data) =>
-            feedPosts.filter((data) => data.id !== parseInt(postToRemove.target.id))
-            );
-        })
+        .then(setPosts(feedPosts.filter((data) => data.id !== post.id)))
     };
-
-    const handleNewPost = () => {
-        setIsSelected(true)
-    }
 
     useEffect(() => {
         fetch("/likes")
@@ -259,11 +234,11 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         </form>
         </FormStyle> 
         :
-
+<>
         <div>
             {ownPost()}
         </div>
-        }
+        
        
             <div className="post-content">
             <img src={post.photos} alt={post.title} />
@@ -321,7 +296,8 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
                         } 
                 </div> 
             </div>
-            
+            </>
+}
     </PostStyle>
     )
 }
@@ -404,24 +380,27 @@ const ButtonStyle = styled.div`
 
         .edit {
             float: left;
-            padding-top: 15px;
+            border: none;
+            background: none;
+            font-size: 18px;
         }
 
         .edit:hover {
             transform: scale(1.2);
-            color: blue
+            color: #afdfd4;
+            background: none;
         }
 
         .delete {
             float: right;
             border: none;
             background: none;
-            font-size:18px
+            font-size: 18px;
         }
 
         .delete:hover {
             transform: scale(1.2);
-            color: red;
+            color: #afdfd4;
             background: none;
         }
         `

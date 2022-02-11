@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Post from './Post'
 
-function PostContainer({search, id, user, name, setEdited, edited}) {
+function PostContainer({search, user, name, setEdited, edited}) {
 
     const [feedPosts, setFeedPosts] = useState([])
     // fetch to database for rendering of posts
@@ -19,11 +19,6 @@ function PostContainer({search, id, user, name, setEdited, edited}) {
                 console.log(post)
                 return post.title.toLowerCase().includes(search.toLowerCase()) || post.user.username.toLowerCase().includes(search.toLowerCase())
             })
-        // } else if (!!id) {
-        //     return feedPosts.filter(post => {
-        //         console.log(post, id)
-        //         return post.user.id === parseInt(id)
-        //     })
         } else if (name === "account") {
             return feedPosts.filter(post => post.user.id === user.id)
         } else {
@@ -31,7 +26,7 @@ function PostContainer({search, id, user, name, setEdited, edited}) {
         }
     }
 
-    const renderPosts = filteredPosts().map(post => <Post key={post.id} user={user} page_id={id} post={post} feedPosts={feedPosts} setPosts={setFeedPosts} setEdited={setEdited} edited={edited}/>)
+    const renderPosts = filteredPosts().map(post => <Post key={post.id} user={user} post={post} feedPosts={feedPosts} setPosts={setFeedPosts} setEdited={setEdited} edited={edited}/>)
 
     if (!feedPosts[0]) return <div>Loading...</div>
     return (

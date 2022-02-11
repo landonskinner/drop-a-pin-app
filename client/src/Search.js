@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import PostContainer from './PostContainer'
 import styled from 'styled-components'
 
@@ -6,25 +6,18 @@ function Search({user}) {
 
     const [search, setSearch] = useState('')
 
-    const handleSearch = (e) => {
-        setSearch(e.target.value)
-        console.log(search)
-    } 
-
     return (
         <div>
             <SearchStyle>
-            <form>
-                <p>
-                    <input
-                        type="text"
-                        name="search"
-                        placeholder="Search for posts by a title or username..."
-                        value={search}
-                        onChange={(e) => handleSearch(e)}
-                    />
-                </p>
-            </form>
+                <form>
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="Search for posts by a title or username..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                </form>
             </SearchStyle>
             <PostContainer search={search} user={user}/>
         </div>
@@ -37,6 +30,7 @@ const SearchStyle = styled.div`
 
     input {
         margin: auto;
+        margin-top: 1em;
         width: 50%;
         border: 2px solid white;
         border-bottom: 2px solid #afdfd4;

@@ -1,21 +1,17 @@
-import React, {useState, useEffect} from 'react'
-import { useHistory } from 'react-router';
+import {useState} from 'react';
 import styled from 'styled-components';
-import earth from './images/earth.jpg'
+import earth from './images/earth.jpg';
 
-
-function PostForm({user, setSubmitted, submitted}) {
+function PostForm({user}) {
     
     const [isSelected, setIsSelected] = useState(false)
     
-
     const [formData, setFormData] = useState({
         title: "",
         body: "",
         photos: earth,
         user_id: user.id
     })
- 
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,42 +24,33 @@ function PostForm({user, setSubmitted, submitted}) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(formData),
-          };
-          
-        // update fetch path once completed on backend  
-          fetch("/posts", configObj).then((resp) => {
-            if (resp.ok) {
-              resp.json().then(() => {
-                  console.log(formData)
-                setFormData({
-                    title: "",
-                    body: "",
-                    photos: earth,
-                    user_id: user.id
-                });
-                
-                setIsSelected(false);
-                setSubmitted(!submitted)
-              });
-            } else {
-              resp.json().then((errors) => {
-                alert('Title and post content must be completed')
-              });
-            }
-          });
-    }
+        }; 
 
-    const handleNewPost = () => {
-        setIsSelected(true)
+        fetch("/posts", configObj).then((resp) => {
+            if (resp.ok) {
+                resp.json().then(() => {
+                    setFormData({
+                        title: "",
+                        body: "",
+                        photos: earth,
+                        user_id: user.id
+                    });
+                    setIsSelected(false);
+                });
+            } else {
+                resp.json().then(() => {
+                    alert('Title and post content must be completed')
+                });
+            }
+        });
     }
 
     return (
         <div>
         {isSelected ? 
         <FormStyle>   
-        <form onSubmit={handleSubmit}>
-            <h2>Share Your Travels...</h2>
-            <p>
+            <form onSubmit={handleSubmit}>
+                <h2>Share Your Travels...</h2>
                 <label htmlFor="title">Title </label>
                 <input
                     type="text"
@@ -71,16 +58,12 @@ function PostForm({user, setSubmitted, submitted}) {
                     value={formData.title}
                     onChange={(e) => handleChange(e)}
                 />
-            </p>
-            <p>
                 <label htmlFor="body">Post Content </label>
                 <textarea
                     name="body"
                     value={formData.body}
                     onChange={(e) => handleChange(e)}
                 />
-            </p>
-            <p>
                 <label htmlFor="photos">Photos </label>
                 <input
                     type="text"
@@ -88,15 +71,12 @@ function PostForm({user, setSubmitted, submitted}) {
                     value={formData.photo}
                     onChange={(e) => handleChange(e)}
                 />
-            </p>
-            <p>
                 <button type="submit">Post!</button>
-            </p>
-        </form>
+            </form>
         </FormStyle> 
         :
         <ButtonStyle>
-            <button type="button" onClick={handleNewPost}>Share Your Travels!</button>
+            <button type="button" onClick={() => setIsSelected(true)}>Share Your Travels!</button>
         </ButtonStyle>
         }
         </div>
@@ -116,16 +96,15 @@ const FormStyle = styled.div`
     border: 5px solid #afdfd4;
     box-shadow: 0 0 0 10px #f3eedb;
     
-
-
     textarea {
-        resize: none;
+        resize: vertical;
         display: block;
         margin: auto;
         width: 80%;
-        height: 300px;
+        height: 150px;
         border: 3px solid #afdfd4;
         border-radius: 4px;
+        font-family: Arial, serif;
     }
 
     input {
@@ -140,6 +119,7 @@ const FormStyle = styled.div`
     label {
         display: inline-block;
         margin-bottom: 5px;
+        margin-top: 5px;
         font-size: 18px;
         border-top: 2px solid #9fd0c1;
         border-bottom: 2px solid #9fd0c1;
