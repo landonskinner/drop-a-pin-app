@@ -9,7 +9,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
 
 
-function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
+function Post({post, setPosts, feedPosts, user}) {
 
     const ownPost = () => {
         // if post belongs to logged in user, give post edit and delete functionality
@@ -45,11 +45,12 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         photo: ""
     })
 
+    // auto-populate post edit form with existing post data
     useEffect(() => {
         fetch(`/posts/${post.id}`)
         .then(resp => resp.json())
         .then(post => setFormData(post))
-    }, [isSelected])
+    }, [isSelected, newComment])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,24 +65,16 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
             body: JSON.stringify(formData),
         };
 
-        fetch(`/posts/${post.id}`, configObj).then((resp) => {
-            if (resp.ok) {
-            resp.json().then(() => {
-                setFormData({
-                    title: "",
-                    body: "",
-                    photo: ""
-                });
-                console.log(edited)
-                setEdited(!edited)
-                setIsSelected(false)
+        fetch(`/posts/${post.id}`, configObj)
+        .then((resp) => resp.json())
+        .then(() => {
+            setFormData({
+                title: "",
+                body: "",
+                photo: ""
             });
-            } else {
-            resp.json().then((errors) => {
-                console.error(errors);
-            });
-            }
-        });
+            setIsSelected(false);
+        })
     }
 
     function handleRemovePost() {
@@ -90,6 +83,7 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
         .then(setPosts(feedPosts.filter((data) => data.id !== post.id)))
     };
 
+    // determine whether post has been liked by user
     useEffect(() => {
         fetch("/likes")
         .then(resp => resp.json())
@@ -97,20 +91,11 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
             const filtered = data.filter(data => {
                 return (data.post.id === post.id) && (data.username === user.username)
             })
-            if (!!filtered[0]) {
-                setIsLiked(true)
-            } else {
-                setIsLiked(false)
-            }
+            filtered.length > 0 ? setIsLiked(true) : setIsLiked(false)
         })
     }, [])
 
     const renderComments = post.comments.map(comment => <PostComment key={comment.id} comment={comment} />)
-    
-    const handleComment = (e) => {
-        console.log(newComment)
-        setNewComment({ ...newComment, [e.target.name]: e.target.value });
-    };
 
     const handleNewComment = (e) => {
         const configObj = {
@@ -121,22 +106,21 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
             body: JSON.stringify(newComment),
           };
 
-          // reload without losing spot on page??
-          fetch("/comments", configObj).then((resp) => {
+        fetch("/comments", configObj).then((resp) => {
             if (resp.ok) {
-              resp.json().then(() => {
-                setNewComment({
-                    text: "",
-                    post_id: post.id,
-                    username: ""
+                resp.json().then(() => {
+                    setNewComment({
+                        text: "",
+                        post_id: post.id,
+                        username: user.username
+                    });
                 });
-              });
             } else {
-              resp.json().then((errors) => {
-                console.error(errors);
-              });
+                resp.json().then((errors) => {
+                    console.error(errors);
+                });
             }
-          });
+        });
     }
 
     const handleLike = () => {
@@ -153,7 +137,7 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
 
           fetch("/likes", configObj).then((resp) => {
             if (resp.ok) {
-              resp.json().then((data) => {
+              resp.json().then(() => {
                 setIsLiked(true)
               });
             } else {
@@ -185,120 +169,102 @@ function Post({post, setPosts, feedPosts, user, edited, setEdited}) {
                         console.error(errors);
                       });
                     }
-                  });
+                });
             })
         })
-
-        
-    }
-
-    const handleExpand = () => {
-        setOpenComments(!openComments)
     }
 
     return (
         <PostStyle>
-            
         {isSelected ? 
-        <FormStyle className="edit-form">   
-        <form onSubmit={handleSubmit}>
-            <p>
-                <label htmlFor="title">Title </label>
-                <input
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={(e) => handleChange(e)}
-                />
-            </p>
-            <p>
-                <label htmlFor="body">Post Content </label>
-                <textarea
-                    name="body"
-                    value={formData.body}
-                    onChange={(e) => handleChange(e)}
-                />
-            </p>
-            <p>
-                <label htmlFor="photo">Photos </label>
-                <input
-                    type="text"
-                    name="photo"
-                    value={formData.photo}
-                    onChange={(e) => handleChange(e)}
-                />
-            </p>
-            <p>
-                <button type="submit">Edit Post</button>
-            </p>
-        </form>
-        </FormStyle> 
+            <FormStyle className="edit-form">   
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="title">Title </label>
+                    <input
+                        type="text"
+                        name="title"
+                        value={formData.title}
+                        onChange={(e) => handleChange(e)}
+                    />
+                    <label htmlFor="body">Post Content </label>
+                    <textarea
+                        name="body"
+                        value={formData.body}
+                        onChange={(e) => handleChange(e)}
+                    />
+                    <label htmlFor="photo">Photos </label>
+                    <input
+                        type="text"
+                        name="photo"
+                        value={formData.photo}
+                        onChange={(e) => handleChange(e)}
+                    />
+                    <button type="submit">Edit Post</button>
+                </form>
+            </FormStyle> 
         :
-<>
-        <div>
-            {ownPost()}
-        </div>
-        
-       
-            <div className="post-content">
-            <img src={post.photos} alt={post.title} />
-                <h1>{post.title}</h1>
-                <Link to={`/user/${post.user.id}`}>
-                    <h3 id="profile-link">By: {post.user.username}</h3>
-                </Link>
-
-                <div className="post-like">
-            <ButtonStyle className="like-button">
-                {isLiked ? 
-                <button type="button" onClick={handleUnlike}>♥</button> 
-                :
-                <button type="button" onClick={handleLike}>♡</button>
-                }
-            </ButtonStyle>
-                
-            </div>
-                
-                <p>
-                    {post.body}
-                </p>
-            </div>
-            <div className="post-comments">
+            <>
                 <div>
-                    {openComments ? 
+                    {ownPost()}
+                </div>
+                <div className="post-content">
+                    <img src={post.photos} alt={post.title} />
+                    <h1>{post.title}</h1>
+                    <h3 id="profile-link">By: {post.user.username}</h3>
+                    <div className="post-like">
+                        <ButtonStyle className="like-button">
+                            {isLiked ? 
+                                <button type="button" onClick={handleUnlike}>♥</button> 
+                            :
+                                <button type="button" onClick={handleLike}>♡</button>
+                            }
+                        </ButtonStyle> 
+                    </div>
+                    <p>{post.body}</p>
+                </div>
+                <div className="post-comments">
                     <div>
-                        <ButtonStyle>
-                        <button type="button" className="comment-button" onClick={handleExpand}><FontAwesomeIcon icon={faComments} /> Comments ▲</button>
-                        </ButtonStyle>
-                        {renderComments}
-                        <CommentFormStyle>
-                        <form>
-                        <p>
-                            <input
-                                type="text"
-                                name="text"
-                                placeholder="Participate in the conversation!"
-                                value={newComment.text}
-                                onChange={(e) => handleComment(e)}
-                            />
-                        </p>
-                        <p>
-                            <button type="submit" onClick={handleNewComment}>Comment</button>
-                        </p>
-                        </form> 
-                        </CommentFormStyle>
-                        </div>
-                        : 
-                        <ButtonStyle>
-                        <button type="button" className="comment-button" onClick={handleExpand}><FontAwesomeIcon icon={faComments}></FontAwesomeIcon> Comments ▼</button>
-                        </ButtonStyle>
-
-                      
-                        } 
-                </div> 
-            </div>
+                        {openComments ? 
+                            <div>
+                                <ButtonStyle>
+                                    <button 
+                                        type="button" 
+                                        className="comment-button" 
+                                        onClick={() => setOpenComments(!openComments)}
+                                    >
+                                        <FontAwesomeIcon icon={faComments} /> Comments ▲
+                                    </button>
+                                </ButtonStyle>
+                                {renderComments}
+                                <CommentFormStyle>
+                                    <form>
+                                        <input
+                                            type="text"
+                                            name="text"
+                                            placeholder="Participate in the conversation!"
+                                            value={newComment.text}
+                                            onChange={(e) => setNewComment({ ...newComment, [e.target.name]: e.target.value })}
+                                        />
+                                        <button type="submit" onClick={handleNewComment}>Comment</button>
+                                    </form> 
+                                </CommentFormStyle>
+                            </div>
+                            : 
+                            <ButtonStyle>
+                                <button 
+                                    type="button" 
+                                    className="comment-button" 
+                                    onClick={() => setOpenComments(!openComments)}
+                                >
+                                    <FontAwesomeIcon icon={faComments} /> Comments ▼
+                                </button>
+                            </ButtonStyle>
+                            } 
+                    </div> 
+                </div>
             </>
-}
-    </PostStyle>
+        }
+        </PostStyle>
     )
 }
 
@@ -306,7 +272,6 @@ export default Post
 
 const PostStyle = styled.div`
     
-
     background: #f3eedb;
     padding: 10px;
     width: 50%;
@@ -355,55 +320,54 @@ const PostStyle = styled.div`
 `
 const ButtonStyle = styled.div`
     button {
-            display: inline-block;
-            margin-bottom: 5px;
-            margin-top: 10px;
-            padding: 6px 20px 6px 20px;
-            /* font-size: 18px; */
-            background: #afdfd4;
-            border-radius: 20px;
-            border: 2px solid #9fd0c1;
-            font-family: Georgia, serif;
-            cursor: pointer;
+        display: inline-block;
+        margin-bottom: 5px;
+        margin-top: 10px;
+        padding: 6px 20px 6px 20px;
+        /* font-size: 18px; */
+        background: #afdfd4;
+        border-radius: 20px;
+        border: 2px solid #9fd0c1;
+        font-family: Georgia, serif;
+        cursor: pointer;
+    }
 
-        }
+    button:hover {
+        background: #7fa69a;
+        
+    }
 
-        button:hover {
-            background: #7fa69a;
-            
-        }
+    .comment-button {
+        position: relative;
+        bottom: 50px;
+    }
 
-        .comment-button {
-            position: relative;
-            bottom: 50px;
-        }
+    .edit {
+        float: left;
+        border: none;
+        background: none;
+        font-size: 18px;
+    }
 
-        .edit {
-            float: left;
-            border: none;
-            background: none;
-            font-size: 18px;
-        }
+    .edit:hover {
+        transform: scale(1.2);
+        color: #afdfd4;
+        background: none;
+    }
 
-        .edit:hover {
-            transform: scale(1.2);
-            color: #afdfd4;
-            background: none;
-        }
+    .delete {
+        float: right;
+        border: none;
+        background: none;
+        font-size: 18px;
+    }
 
-        .delete {
-            float: right;
-            border: none;
-            background: none;
-            font-size: 18px;
-        }
-
-        .delete:hover {
-            transform: scale(1.2);
-            color: #afdfd4;
-            background: none;
-        }
-        `
+    .delete:hover {
+        transform: scale(1.2);
+        color: #afdfd4;
+        background: none;
+    }
+`
 
 const FormStyle = styled.div`
 
@@ -412,17 +376,17 @@ const FormStyle = styled.div`
     width: 50%;
     min-width: 950px
     margin: auto;
-    
-
 
     textarea {
-        resize: none;
+        resize: vertical;
         display: block;
         margin: auto;
         width: 100%;
-        height: 300px;
+        height: 150px;
         border: 3px solid #afdfd4;
         border-radius: 4px;
+        font-family: Arial, serif;
+        padding: 5px;
     }
 
     input {
@@ -432,16 +396,17 @@ const FormStyle = styled.div`
         width: 80%;
         border: 3px solid #afdfd4;
         border-radius: 4px;
+        font-family: Arial, serif !important;
     }
 
     label {
         display: inline-block;
         margin-bottom: 5px;
+        margin-top: 5px;
         font-size: 18px;
         border-top: 2px solid #9fd0c1;
         border-bottom: 2px solid #9fd0c1;
     }
-
 
     button {
         display: inline-block;
@@ -454,7 +419,6 @@ const FormStyle = styled.div`
         border: 2px solid #9fd0c1;
         font-family: Georgia, serif;
         cursor: pointer;
-
     }
 
     input {
@@ -467,14 +431,10 @@ const FormStyle = styled.div`
         padding-left: 10px;
         font-family: Georgia;
     }
-    
-
-    }
 
     button:hover {
         background: #7fa69a;
     }
-
 
 `
 
@@ -482,6 +442,7 @@ const CommentFormStyle = styled.div`
 
     input {
         margin: auto;
+        margin-top: 10px;
         width: 97%;
         border: 2px solid white;
         border-bottom: 2px solid #afdfd4;
@@ -494,7 +455,7 @@ const CommentFormStyle = styled.div`
     button {
         display: inline-block;
         margin-bottom: 0px;
-        margin-top: 5px;
+        margin-top: 10px;
         padding: 3px 10px 3px 10px;
         font-size: 16px;
         background: #afdfd4;
