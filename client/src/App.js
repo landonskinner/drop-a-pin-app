@@ -37,9 +37,6 @@ function App() {
         <Route path="/search">
           <Search user={user}/>
         </Route>
-        {/* <Route path="/user/:id">
-          <AccountPage user={user} />
-        </Route> */}
       </Switch>
     </div>
   );

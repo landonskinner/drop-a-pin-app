@@ -48,7 +48,7 @@ function PostForm({user}) {
     return (
         <div>
         {isSelected ? 
-        <FormStyle>   
+        <FormStyle> 
             <form onSubmit={handleSubmit}>
                 <h2>Share Your Travels...</h2>
                 <label htmlFor="title">Title </label>

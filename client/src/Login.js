@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useHistory } from "react-router";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import Header from "./Header";
@@ -11,7 +12,9 @@ function Login({ onLogin }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([])
 
-  function handleSubmit(e, route, body) {
+  const history = useHistory()
+
+  function handleSubmit(e, route, bodyObj) {
     e.preventDefault();
     setIsLoading(true);
     fetch(route, {
@@ -19,11 +22,14 @@ function Login({ onLogin }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(bodyObj),
     }).then((r) => {
       setIsLoading(false);
       if (r.ok) {
-        r.json().then((user) => onLogin(user));
+        r.json().then((user) => {
+          onLogin(user)
+          history.push('/home')
+        });
       } else {
         r.json().then((err) => setErrors(err.errors));
       }

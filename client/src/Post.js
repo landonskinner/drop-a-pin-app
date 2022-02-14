@@ -1,13 +1,10 @@
-import React, {useState, useEffect} from 'react'
-import {Link, Route} from 'react-router-dom'
-import styled from 'styled-components'
+import {useState, useEffect} from 'react'
 import PostComment from './PostComment'
-
+import styled from 'styled-components'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faComments } from '@fortawesome/free-solid-svg-icons'
-
 
 function Post({post, setPosts, feedPosts, user}) {
 
@@ -50,7 +47,7 @@ function Post({post, setPosts, feedPosts, user}) {
         fetch(`/posts/${post.id}`)
         .then(resp => resp.json())
         .then(post => setFormData(post))
-    }, [isSelected, newComment])
+    }, [isSelected])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -155,7 +152,7 @@ function Post({post, setPosts, feedPosts, user}) {
             const filtered = data.filter(data => {
                 return (data.post.id === post.id) && (data.username === user.username)
             })
-            filtered.map(like => {
+            filtered.forEach(like => {
                 fetch(`/likes/${like.id}`, {
                     method: "DELETE"
                 })
@@ -223,9 +220,9 @@ function Post({post, setPosts, feedPosts, user}) {
                     <p>{post.body}</p>
                 </div>
                 <div className="post-comments">
-                    <div>
+                    <div className="comments">
                         {openComments ? 
-                            <div>
+                            <div className="open-comments">
                                 <ButtonStyle>
                                     <button 
                                         type="button" 
@@ -250,7 +247,7 @@ function Post({post, setPosts, feedPosts, user}) {
                                 </CommentFormStyle>
                             </div>
                             : 
-                            <ButtonStyle>
+                            <ButtonStyle className="closed-comments">
                                 <button 
                                     type="button" 
                                     className="comment-button" 
@@ -276,6 +273,7 @@ const PostStyle = styled.div`
     padding: 10px;
     width: 50%;
     margin: auto;
+    padding-bottom: -3em;
     margin-top: 25px;
     margin-bottom: 25px;
     border-radius: 5px;
@@ -305,7 +303,7 @@ const PostStyle = styled.div`
         text-align: left;
         margin: auto;
         position: relative;
-        bottom: 110px;
+        bottom: 10em;
         width: 85%;
         background: white;
         padding: 15px;
@@ -315,8 +313,23 @@ const PostStyle = styled.div`
     
     .edit-form {
         margin: auto;
+        width: 90%;
     }
-    
+
+    .post-like {
+        position: relative;
+        bottom: 2.5em;
+    }
+
+    .post-comments {
+        position: relative;
+        bottom: 5em;
+    }
+
+    .closed-comments {
+        height: 0;
+    }
+
 `
 const ButtonStyle = styled.div`
     button {
@@ -324,7 +337,6 @@ const ButtonStyle = styled.div`
         margin-bottom: 5px;
         margin-top: 10px;
         padding: 6px 20px 6px 20px;
-        /* font-size: 18px; */
         background: #afdfd4;
         border-radius: 20px;
         border: 2px solid #9fd0c1;
@@ -335,11 +347,6 @@ const ButtonStyle = styled.div`
     button:hover {
         background: #7fa69a;
         
-    }
-
-    .comment-button {
-        position: relative;
-        bottom: 50px;
     }
 
     .edit {
@@ -393,7 +400,7 @@ const FormStyle = styled.div`
         display: block;
         justify-content: center;
         margin: auto;
-        width: 80%;
+        width: 100%;
         border: 3px solid #afdfd4;
         border-radius: 4px;
         font-family: Arial, serif !important;
@@ -419,17 +426,6 @@ const FormStyle = styled.div`
         border: 2px solid #9fd0c1;
         font-family: Georgia, serif;
         cursor: pointer;
-    }
-
-    input {
-        margin: auto;
-        width: 97%;
-        border: 2px solid white;
-        border-bottom: 2px solid #afdfd4;
-        border-radius: 10px;
-        height: 40px;
-        padding-left: 10px;
-        font-family: Georgia;
     }
 
     button:hover {

@@ -19,7 +19,7 @@ function NavBar({setUser}) {
                 <NavLink to="/home" exact><li><FontAwesomeIcon icon={faHome} /> Feed</li></NavLink>
                 <NavLink to="/account"><li><FontAwesomeIcon icon={faUser} /> Account</li></NavLink>
                 <NavLink to="/search"><li><FontAwesomeIcon icon={faSearch} /> Search</li></NavLink>
-                <a variant="outline" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSignOutAlt} /> Logout</li></a>
+                <a variant="outline" href="/" onClick={handleLogoutClick}><li><FontAwesomeIcon icon={faSignOutAlt} /> Logout</li></a>
             </div>
         </HeaderStyle>
     )
