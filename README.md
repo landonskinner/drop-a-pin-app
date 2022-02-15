@@ -5,7 +5,7 @@ This application was built using a React frontend and a Ruby on Rails backend. T
 ![Screen Shot 2022-02-08 at 9 32 05 AM](https://user-images.githubusercontent.com/89482763/153020137-55fdccb6-37ad-4ee7-8fe6-efebf81754ab.png)
 
 ## Hosted Link
-Visit the deployed [site](https://dropapin-travel-blog.herokuapp.com/)!
+Visit the deployed [site](https://dropapin-travel-blog.herokuapp.com/)! Or check out the [demo](https://www.youtube.com/watch?v=SWAy7fnVAFY)!
 
 ## Technologies Used
 * React v17
